@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:http/http.dart' as http;
@@ -31,10 +28,11 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _accessToken;
   String? _userInfo;
   // final response_type = 'code';
-  final String _clientId = 'native-client';
+  //final String _clientId = 'native-client';
+  final String _clientId = 'flutter';
   String returnUrl = "";
   final String _redirectUrl =
-      'https://authenticationserver2023.azurewebsites.net/account/login';
+      'https://authenticationserver2023.azurewebsites.net/connect/login';
   final String _discoveryUrl =
       'https://authenticationserver2023.azurewebsites.net/.well-known/openid-configuration';
   final List<String> _scopes = <String>[
@@ -104,7 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
       if (result != null) {
         _processAuthTokenResponse(result);
+        // Trích xuất thông tin từ URL
         await _callApi();
+        print('Authorization Code: ${result?.accessToken}');
+print('Access Token: ${result?.accessToken}');
+print('ID Token: ${result?.idToken}');
+print('Token Type: ${result?.tokenType}');
       }
     } catch (e) {
       print('Error during sign in: $e');
@@ -140,6 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _processAuthResponse(AuthorizationResponse response) {
     setState(() {
+      
       _isBusy = false;
     });
   }
